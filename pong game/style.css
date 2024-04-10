@@ -1,0 +1,36 @@
+body{
+    text-align: center;
+    color: white;
+    background-color: rgb(150,150,150);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+h1{
+    font-size: 3em;      
+    text-shadow: 0 0 20px black;
+}
+#myCanvas{
+    background-color: rgb(50,50,50);
+    width: 80%;
+    height: 100%;
+    border: 5px solid white;
+    border-radius: 10px;
+    
+    box-shadow: 5px 5px 15px black;
+}
+main{
+    width: 100%;
+}
+.score{
+    position: absolute;
+    font-size: 3em;
+    text-shadow: 0 0 10px black;
+}
+#userScore{
+    margin-left: 30%;
+}
+#oppScore{
+    margin-left: 67%;
+}
+p{
+    color: red;
+}
