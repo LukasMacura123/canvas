@@ -1,1 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <title>pong-game</title>
+    </head>
+    <body>
+        <h1>pong game</h1>
+        <div id="userScore" class="score">0</div>
+        <div id="oppScore"  class="score">0</div>
 
+        <main>
+            <canvas id="myCanvas" width="1000px" height="500px"></canvas>
+        </main>
+        <div id="box1" class="box">player</div>
+        <div id="box2" class="box">player</div>
+
+        <button onclick="switchModes()">vs</button>
+
+
+        <script src="main.js"></script>
+        <script src="AI-player.js"></script>
+</body>
+</html>
