@@ -9,14 +9,32 @@ var infoBox = document.getElementById('infobox')
 var gateBox = document.getElementById('gates')
 var inputBox = document.getElementById('inputBox')
 
-var amount
+var amount = null
 
 var toolBoxContent = {
     gates: ['main','peak'],
     activeGate: 'main',
 
     inputs: ['cable','&', '&N', '1', '1N', 'N'],
+    inputsInfo: {
+        'cable': 'this allowes you to connect different gates and cables',
+        '&': 'and gate allows you to add up different inputs',
+        '&N': 'Nand gate allows you to negate add up input',
+        '1': 'or gate allows you to multipli input',
+        '1N': 'Nor gate allows you to negate multiplied input',
+        'N': 'Not gate allows you to negate any input'
+    },
     grabedInput: null
+}
+var tools = {
+    cable:{
+        startLoc: null, endLock: null
+    },
+    '&': null,
+    '&N': null,
+    '1': null,
+    '1N': null,
+    'N': null
 }
 
 updateToolBox()
@@ -35,7 +53,7 @@ function updateToolBox(){
     
     content = ''
     for(let i of toolBoxContent.inputs){
-        content += `<div class="input">${i}</div>`
+        content += `<div class="input" id="${(i)}">${i}</div>`
     }
     inputBox.innerHTML = content
 
@@ -62,6 +80,21 @@ function drawGrid(){
         ctx.fillRect(i*(amount), 0, 2, canvas.height)
     }
 }
+function cable(e){
+
+    ctx.strokeStyle = 'white'
+    ctx.lineWidth = 3
+
+    ctx.moveTo(tools.cable.startLoc.x, cable.startLoc.y)
+
+    while(tools.cable.endLock == null){    
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        drawGrid()
+        
+        ctx.lineTo(e.clientX, e.clientY)
+    }
+    
+}
 window.addEventListener('resize', () => {
     canvas.height = window.innerHeight, canvas.width = window.innerWidth
 
@@ -81,4 +114,20 @@ window.addEventListener('mousemove', (e) => {
             }
         }
     }
+
+    if(tools.cable.startLoc == null) cable(e)
 })
+
+let HOVER = setInterval(() => {
+    infoBox.style.top = '110vh'
+
+    for(let i of toolBoxContent.inputs){
+        let elementItem = document.getElementById(i)
+        elementItem.addEventListener('mouseover', (e) => {
+            infoBox.style.top = `${e.clientY + 15}px`
+
+            infoBox.textContent = toolBoxContent.inputsInfo[i]
+        })
+    }
+}, 2000)
+
