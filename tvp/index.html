@@ -1,1 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>T - V - P</title>
+</head>
+<body>
+    <main>
+        <canvas id="myCanvas"></canvas>
+    </main>
 
+    <div id="infobox"></div>
+
+    <div id="toolbox">
+        <p id="toolBoxHead">toolbox</p>
+        <div class="fileBox">
+            <p style="text-align: right; padding-right: 1vh; border-bottom: 2px white solid">gates</p>
+            <div id="gates">
+            </div>
+        </div>
+        <div class="fileBox">
+            <p style="text-align: right; padding-right: 1vh; border-bottom: 2px white solid">inputs</p>
+            <div id="inputBox"></div>
+        </div>
+        <div id="buttonBox">
+            <button onclick="" class="toolBoxButtons" id="addNewInput">add input</button><br>
+            <button onclick="addFile()" class="toolBoxButtons" id="addNewGate" >add gate</button><br>
+            <button onclick="" class="toolBoxButtons" id="removeContent">remove</button>
+        </div>
+    </div>
+
+    <div id="projectMenu">main</div>
+
+    <script src="main.js"></script>
+</body>
+</html>

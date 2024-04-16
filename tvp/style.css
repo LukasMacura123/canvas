@@ -1,0 +1,119 @@
+body{overflow: hidden; font-family: 'Courier New', Courier, monospace;}
+
+main{
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    background-color: blue;
+    width: 100vw;
+    height: 100vh;
+}
+canvas{
+    background-color: black;
+    width: 100%;
+    height: 100%;
+}
+#infobox{
+    top: 110vh;
+
+    position: absolute;
+    padding: 0.3vh;
+    border: 1px black solid;
+    border-radius: 3px;
+
+    font-family: 'Courier New', Courier, monospace;
+
+    box-shadow: 0 0 5px white;
+    background-color: white;
+    color: black;
+}
+#toolbox{
+    position: absolute;
+    top: 0;
+    left: 0;
+    
+    height: 100vh;
+    width: 10vw;
+
+    font-weight: bold;
+    color: white;
+
+    background-color: rgb(50,50,50);
+    border-right: 5px rgb(25,25,25) solid;
+    box-shadow: 0 0 10px rgb(25,25,25);
+}
+#toolBoxHead{font-size: 1.2em; text-align: center;}
+#gates{padding-left: 5%;}
+#inputBox{padding-left: 5%;}
+#buttonBox{position: absolute; top: 90vh;}
+#activeFile{border: 2px solid rgb(153, 0, 153);}
+#projectMenu{
+    color: white;
+    position: absolute;
+    
+    margin-left: 90%;
+
+    margin-top: 1.5vh;
+    padding-right: 1vw;
+    font-size: 2.2em;
+    font-weight: bold;
+}
+.toolBoxButtons{
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 0.9em;
+
+    color: white;
+
+    background-color: rgba(153, 0, 153, 0.425);
+    margin-left: 1vh;
+
+    padding-top: 0.5vh;
+    padding-bottom: 0.5vh;
+    margin-bottom: 0.5vh;
+
+    border: 3px solid rgb(25,25,25);
+    border-radius: 15px;
+
+    width: 8vw;
+}
+.toolBoxButtons:hover{
+    transition: 0.5s;
+    box-shadow: 0 0 5px white;
+    background-color: black;
+}
+.fileBox{
+    width: 95%;
+}
+.file{
+    cursor: pointer;
+    border: 2px solid rgb(25,25,25);
+    border-radius: 5ch;
+    padding-left: 6%;
+    background-color: rgb(75,50,75);
+    margin-bottom: 0.25vh;
+}
+.file:hover{
+    background-color: black;
+    transition: 0.5s;
+    box-shadow: 0 0 5px white;
+}
+.input{
+    width: 65%;
+    height: 20%;
+
+    font-size: 1.2em;
+
+    cursor: pointer;
+    border: 2px solid rgb(75,50,75);
+    border-radius: 5ch;
+    padding-left: 6%;
+    background-color: rgb(75,50,75);
+    margin-bottom: 0.25vh;
+}
+.input:hover{
+    cursor:pointer;
+    transition: 0.5s;
+    box-shadow: 0 0 5px white;
+}
