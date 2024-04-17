@@ -15,6 +15,8 @@ var toolBoxContent = {
     gates: ['main','peak'],
     activeGate: 'main',
 
+    activeInput: 'cable',
+
     inputs: ['cable','&', '&N', '1', '1N', 'N'],
     inputsInfo: {
         'cable': 'this allowes you to connect different gates and cables',
@@ -24,17 +26,13 @@ var toolBoxContent = {
         '1N': 'Nor gate allows you to negate multiplied input',
         'N': 'Not gate allows you to negate any input'
     },
-    grabedInput: null
 }
-var tools = {
-    cable:{
-        startLoc: null, endLock: null
-    },
-    '&': null,
-    '&N': null,
-    '1': null,
-    '1N': null,
-    'N': null
+
+var gateId = {
+    allGates: [],
+    IDs: [],
+    activeGate: '',
+    activeId: ''
 }
 
 updateToolBox()
@@ -53,10 +51,12 @@ function updateToolBox(){
     
     content = ''
     for(let i of toolBoxContent.inputs){
-        content += `<div class="input" id="${(i)}">${i}</div>`
+        if(i == toolBoxContent.activeInput){
+            content += `<div class="input" id="${i}" style="box-shadow: 0 0 5px black;">${i}</div>`
+
+        }else content += `<div class="input" id="${(i)}" onclick="changeInput('${i}')">${i}</div>`
     }
     inputBox.innerHTML = content
-
 }
 function addFile(){
     let fileName = window.prompt('name your file:')
@@ -68,19 +68,23 @@ function addFile(){
     updateToolBox()
 }
 function drawGrid(){
-    let x = canvas.width, y = canvas.height
+    let x = canvas.height, y = canvas.height
     
-    if(y > x) amount = y/32
-    else amount = x/32
+    if(y > x) amount = y/48
+    else amount = x/48
     
     ctx.fillStyle = 'rgb(15,15,15)'
 
-    for(let i = 1; i <= amount; i++){
+    for(let i = 1; i <= 100; i++){
         ctx.fillRect(0, i*(amount), canvas.width, 2)
         ctx.fillRect(i*(amount), 0, 2, canvas.height)
     }
+    let GateStyle = document.getElementById('Gate0')
+    GateStyle.style.width = `${amount*6}px`, GateStyle.style.height = `${amount*6}px`
+
+    GateStyle.style.top = `${amount*5}px`, GateStyle.style.left = `${amount*15}px`
 }
-function cable(e){
+function cableControl(e){
 
     ctx.strokeStyle = 'white'
     ctx.lineWidth = 3
@@ -95,6 +99,20 @@ function cable(e){
     }
     
 }
+function changeInput(id){
+    toolBoxContent.activeInput = id
+    addHtmlGate()
+    updateToolBox()
+}
+function addHtmlGate(){
+        
+    let IDname = `${toolBoxContent.activeInput}${Math.floor(Math.random()*1000)}`
+
+    while(gateId.IDs.includes(IDname)){
+        IDname = `${toolBoxContent.activeInput}${Math.floor(Math.random()*1000)}`
+    }
+    gateId.activeId = IDname
+}
 window.addEventListener('resize', () => {
     canvas.height = window.innerHeight, canvas.width = window.innerWidth
 
@@ -105,19 +123,16 @@ window.addEventListener('mousemove', (e) => {
     
     drawGrid()
 
-    ctx.fillStyle = 'white'
-    for(let i = 0; i <= amount; i++){
-        for(let j = 0; j <= amount; j++){
+    ctx.fillStyle = 'rgba(143, 51, 143, 0.829)'
+    for(let i = 0; i <= 100; i++){
+        for(let j = 0; j <= 100; j++){
             if((e.clientY > i*amount - amount/2 && e.clientY < i*amount + amount/2) && 
                 (e.clientX > j*amount - amount/2 && e.clientX < j*amount + amount/2)){
-                    ctx.fillRect(j*amount -1, i*amount -1, 4, 4)
+                    ctx.fillRect(j*amount -2, i*amount -2, 6, 6)
             }
         }
     }
-
-    if(tools.cable.startLoc == null) cable(e)
 })
-
 let HOVER = setInterval(() => {
     infoBox.style.top = '110vh'
 
@@ -130,4 +145,3 @@ let HOVER = setInterval(() => {
         })
     }
 }, 2000)
-

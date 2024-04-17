@@ -119,3 +119,26 @@ canvas{
     transition: 0.5s;
     box-shadow: 0 0 5px white;
 }
+.Gate{
+    cursor: grab;
+    position: absolute;
+    width: 16vh;
+    height: 16vh;
+    text-align: right;
+}
+.gateBody{
+    margin: auto;
+    width: 50%;
+    height: 95%;
+    border: 0.4vh solid white;
+    border-radius: 8px;
+    background-color: rgba(143, 51, 143, 0.829);
+}
+.gateName{
+    font-size: 2em;
+    font-weight: bold;
+    color: white;
+
+    padding-right: 10%;
+    padding-top: 10%;
+}
