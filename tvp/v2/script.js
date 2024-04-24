@@ -17,7 +17,7 @@ var myTools = {
 var gateInfo = {
     activeId: 'Gate0',
     
-    allGates: ['<div class="Gate" id="Gate0"><div class="gateBody"><div class="gateName">1</div></div></div>'],
+    allGates: ['<div class="Gate" id="Gate0"><div class="gateBody"><div class="gateName" id="Gate0text">1</div></div></div>'],
     gateIds: [],
 
     IdToLoc:{},
@@ -26,6 +26,20 @@ var gateInfo = {
     freeSpace: true,
 
     nextId: 1
+}
+
+var tools = {
+    cable: false,
+    gate: true
+}
+
+var cable = {
+    ConnectedGates: {},
+    
+    GateToInputRatio: {},
+
+    startLoc: null,
+    activeGate: false
 }
 
 drawGrid()
@@ -58,7 +72,30 @@ function updateGateLocation(){
         GATE.style.opacity = '0.75'
     }
 }
+function drawLine(startX, startY, endX, endY, color){
+    ctx.beginPath()
 
+    ctx.strokeStyle = color
+    ctx.lineWidth = 5
+
+    ctx.moveTo(startX, startY)
+    ctx.lineTo(endX, endY)
+
+    ctx.stroke()
+}
+function showConnections(){
+    for(let i of gateInfo.gateIds){
+        if(cable.ConnectedGates[i] != null){
+            for(let j of cable.ConnectedGates[i]){
+                if(j[0] != null){
+                    try{
+                        drawLine(gateInfo.IdToLoc[i][0], gateInfo.IdToLoc[i][1], gateInfo.IdToLoc[j][0], gateInfo.IdToLoc[j][1], 'white')
+                    }catch(error){}
+                }
+            }   
+        }
+    }
+}
 window.addEventListener('resize', () => {
     canvas.width  = window.innerWidth
     canvas.height = window.innerHeight
@@ -74,10 +111,19 @@ window.addEventListener('mousemove', (e) => {
     ctx.clearRect(0,0,canvas.width,canvas.height)
 
     drawGrid()
+    if(tools.gate){
+        
+        activeGate.style.top = `${e.clientY + 10}px`, activeGate.style.left = `${e.clientX + 10}px`
+    }else{
 
-    activeGate.style.top = `${e.clientY + 10}px`, activeGate.style.left = `${e.clientX + 10}px`
+        if(cable.startLoc != null){
+            drawLine(cable.startLoc[0], cable.startLoc[1], e.clientX, e.clientY, 'rgba(255,255,255,0.6)')
+        }
+    }
 
-    ctx.fillStyle = 'rgba(143, 51, 143, 0.829)'
+    showConnections()
+
+    ctx.fillStyle = 'rgb(143, 51, 143)'
     for(let i = 0; i < 100; i++){
         for(let j = 0; j < 100; j++){
             if((e.clientY > i*amount - amount/2 && e.clientY < i*amount + amount/2) &&
@@ -110,7 +156,49 @@ window.addEventListener('mousemove', (e) => {
     if(!yesNo) document.getElementById(gateInfo.activeId).style.opacity = '0.1'
     else document.getElementById(gateInfo.activeId).style.opacity = '0.5'
 })
+window.addEventListener('keypress', (e) => {
+    if(e.key == ' '){  
+        if(tools.cable) tools.cable = false, tools.gate = true
+        else tools.cable = true, tools.gate = false
+    
+        let GATE = document.getElementById(gateInfo.activeId)
 
+        if(cable){
+            GATE.style.top = '110vh'
+        }else{
+            GATE.style.left = `${e.clientX + 10}px`
+            GATE.style.top  = `${e.clientY + 10}px`
+        }
+        updateGateLocation()
+    }
+    if(cable.startLoc != null && e.key == 'q'){
+        cable.startLoc = null
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        drawGrid()
+        showConnections()
+    }
+    if(e.key == 'e'){
+        if(gateInfo.activeInput == '1') gateInfo.activeInput = '&'
+        else gateInfo.activeInput = '1'
+
+        document.getElementById(`${gateInfo.activeId}text`).textContent = gateInfo.activeInput
+    }
+    
+    ctx.clearRect(0,0,canvas.width,canvas.height)
+
+    drawGrid()
+    if(tools.gate){
+        
+        activeGate.style.top = `${e.clientY + 10}px`, activeGate.style.left = `${e.clientX + 10}px`
+    }else{
+
+        if(cable.startLoc != null){
+            drawLine(cable.startLoc[0], cable.startLoc[1], e.clientX, e.clientY, 'rgba(255,255,255,0.6)')
+        }
+    }
+
+    showConnections()
+})
 window.addEventListener('mousedown', (e) =>{
     let X, Y
 
@@ -121,11 +209,11 @@ window.addEventListener('mousedown', (e) =>{
     else Y = e.clientY - e.clientY % amount + amount
 
 
-    if(e.button === 0){       
-        if(gateInfo.freeSpace && mouseMoved){
+    if(e.button === 0 && tools.gate){       
+        if(gateInfo.freeSpace && mouseMoved && myTools){
             gateInfo.gateIds.push(gateInfo.activeId)
 
-            gateInfo.allGates.push(`<div class="Gate" id="Gate${gateInfo.nextId}"><div class="gateBody"><div class="gateName">${gateInfo.activeInput}</div></div></div>`)
+            gateInfo.allGates.push(`<div class="Gate" id="Gate${gateInfo.nextId}"><div class="gateBody"><div class="gateName" id="Gate${gateInfo.nextId}text">${activeGate.textContent}</div></div></div>`)
 
             container.innerHTML = `${gateInfo.allGates.join('')}${gateInfo.activeGate}`
 
@@ -145,14 +233,15 @@ window.addEventListener('mousedown', (e) =>{
             GATE.style.top  = `${e.clientY + 10}px`
         
             mouseMoved = false
+            updateGateLocation()
         }   
-    }else if(e.button === 1){
+    }else if(e.button === 1 && cable.startLoc == null){
         for(let i of gateInfo.gateIds){
             let gateX = gateInfo.IdToLoc[i][0], gateY = gateInfo.IdToLoc[i][1]
 
             if(e.clientX > gateX && e.clientX < gateX + amount*4 && e.clientY > gateY && e.clientY < gateY + amount*6){
                 
-                let index = gateInfo.allGates.indexOf(`<div class="Gate" id="${i}"><div class="gateBody"><div class="gateName">${document.getElementById(i).textContent}</div></div></div>`)
+                let index = gateInfo.allGates.indexOf(`<div class="Gate" id="${i}"><div class="gateBody"><div class="gateName" id="${i}text">${document.getElementById(i).textContent}</div></div></div>`)
 
                 gateInfo.allGates.splice(index, 1)
                 gateInfo.gateIds.splice(gateInfo.gateIds.indexOf(i), 1)
@@ -163,13 +252,31 @@ window.addEventListener('mousedown', (e) =>{
         }
         
         container.innerHTML = `${gateInfo.allGates.join('')}${gateInfo.activeGate}`
+
         GATE = document.getElementById(gateInfo.activeId)
-
         activeGate = document.getElementById(gateInfo.activeId)
-        GATE.style.opacity = '0.5'
 
-        GATE.style.left = `${e.clientX + 10}px`
-        GATE.style.top  = `${e.clientY + 10}px`
+        GATE.style.opacity = '0.5'
+        if(tools.gate){
+            GATE.style.left = `${e.clientX + 10}px`
+            GATE.style.top  = `${e.clientY + 10}px`
+        }else{
+            GATE.style.top = '110vh'
+        }
+        updateGateLocation()
     }
-    updateGateLocation()
+    ctx.clearRect(0,0,canvas.width,canvas.height)
+
+    drawGrid()
+    if(tools.gate){
+        
+        activeGate.style.top = `${e.clientY + 10}px`, activeGate.style.left = `${e.clientX + 10}px`
+    }else{
+
+        if(cable.startLoc != null){
+            drawLine(cable.startLoc[0], cable.startLoc[1], e.clientX, e.clientY, 'rgba(255,255,255,0.6)')
+        }
+    }
+
+    showConnections()
 })
