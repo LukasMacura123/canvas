@@ -25,10 +25,17 @@
         <div onclick="removeInput()" class="myButton">remove input</div>
         <div onclick="addOutput()" class="myButton">add output</div>
         <div onclick="removeOutput()" class="myButton">remove output</div>
+        <!-- <div onclick="findAnswer()" class="myButton">ans..</div> -->
     
         <div id="tableButton" onclick="showInputTable()">+table</div>
-        <div id="inputTable">
-            <table></table>
+        <div id="tableContainer">
+            <div id="fillTable" onclick="autoFillTable()">fill</div>
+            <div id="TABLE">
+                <div id="TABLEin"></div>
+                <div id="separator"></div>
+                <div id="TABLEout"></div>
+            </div>
+            <div id="ansButton" onclick="fillAnswer()">ans</div>
         </div>
     </div>
 

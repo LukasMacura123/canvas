@@ -24,7 +24,8 @@ var OUTPUTS = {
     IDs: ['outputZ'],
     idToPoint: {},
     gateIDs: [],
-    toGate: {}
+    toGate: {},
+    haveInput: []
 }
 var GATES = {
     IDs: [],
@@ -40,8 +41,9 @@ var GATES = {
     freeSpace: true,
     nextId: 0,
     
-    values: {},
-
+    hasOutput: [],
+    inputs: {},
+    values: {'inputA':1}
 }
 var CABLE = {
     startGate: null,
