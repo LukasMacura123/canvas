@@ -13,8 +13,10 @@ var amount = canvas.height/amountOfSpace, cursorPoint
 
 var moveGate = true
 
+var dontPlace = true
+
 var INPUTS = {
-    all: ['1','&','N1','N&'],
+    all: ['1','&','N1','N&','X1','NX1'],
     idToPoint: {},
     startIn: null,
     IDs: ['inputA'],
@@ -24,8 +26,7 @@ var OUTPUTS = {
     IDs: ['outputZ'],
     idToPoint: {},
     gateIDs: [],
-    toGate: {},
-    haveInput: []
+    toGate: {}
 }
 var GATES = {
     IDs: [],
@@ -43,7 +44,7 @@ var GATES = {
     
     hasOutput: [],
     inputs: {},
-    values: {'inputA':1}
+    values: {}
 }
 var CABLE = {
     startGate: null,
@@ -105,7 +106,7 @@ function displayConnections(){
 
             for(let i of CABLE.gateInputs[id]){
                 
-                if(i != null){
+                if(i != null && !i.includes('input')){
                     let X = (GATES.idToPoint[i][0] + 4)*amount - amount/2.5, Y = (GATES.idToPoint[i][1] + 3)*amount
 
                     startY += distance
@@ -302,7 +303,7 @@ window.addEventListener('mousedown', (e) => {
             addGateHtml()
             e = updateAll(e)
 
-        }else if((e.button == 2 || e.button == 0)){
+        }else if((e.button == 2 || e.button == 0)&& dontPlace){
             
             for(let id of GATES.IDs){
                 
@@ -347,3 +348,5 @@ window.addEventListener('mousedown', (e) => {
     }
 })
 window.addEventListener('contextmenu', (e) => {e.preventDefault()})
+document.getElementById('tableContainer').addEventListener('mouseover', () => {dontPlace = false})
+document.getElementById('tableContainer').addEventListener('mouseleave', () => {dontPlace = true})

@@ -25,6 +25,69 @@ function ANDgate(gateInput){
 function ORgate(gateInput){
     return (gateInput.includes(1)) ? 1 : 0
 }
+function XORgate(gateInput){
+    let cnt
+    switch(gateInput.length){
+        
+        case 2:
+        
+            return (gateInput.includes(0) && gateInput.includes(1)) ? 1 : 0
+
+        case 3:
+
+            cnt = XORgate([gateInput[0], gateInput[1]])
+            return XORgate([cnt, gateInput[2]])
+        case 4:
+            
+            cnt = [XORgate([gateInput[0], gateInput[1]]), XORgate([gateInput[2], gateInput[3]])]
+            return XORgate(cnt)
+        case 5:
+            
+            cnt = [XORgate([gateInput[0], gateInput[1], gateInput[2]]), XORgate([gateInput[3], gateInput[4]])]
+            return XORgate(cnt)
+        case 6:
+            
+            cnt = []
+            for(let i = 0; i<6; i+=3){
+                cnt.push(XORgate([gateInput[i], gateInput[i+1], gateInput[i+2]]))
+            }
+            return XORgate(cnt)
+        case 7:
+
+            cnt = [XORgate([gateInput[0], gateInput[1], gateInput[2], gateInput[3]]), XORgate([gateInput[4], gateInput[5], gateInput[6]])]
+            return XORgate(cnt)
+        case 8:
+
+            cnt = []
+            for(let i = 0; i<8; i+=4){
+                cnt.push(XORgate([gateInput[i], gateInput[i+1], gateInput[i+2], gateInput[i+3]]))
+            }
+            return XORgate(cnt)
+        case 9:
+            
+            cnt = [XORgate([gateInput[0], gateInput[1], gateInput[2], gateInput[3], gateInput[4]]), XORgate([gateInput[5], gateInput[6], gateInput[7], gateInput[8]])]
+            return XORgate(cnt)
+        case 10:
+
+            cnt = []
+            for(let i = 0; i<10; i+=5){
+                cnt.push(XORgate([gateInput[i], gateInput[i+1], gateInput[i+2], gateInput[i+3], gateInput[i+4]]))
+            }
+            return XORgate(cnt)
+        case 11:
+
+            cnt = [XORgate([gateInput[0], gateInput[1], gateInput[2], gateInput[3], gateInput[4]]), XORgate([gateInput[5], gateInput[6], gateInput[7], gateInput[8], gateInput[9], gateInput[10]])]
+            return XORgate(cnt)
+        case 12:
+
+            cnt = []
+            for(let i = 0; i<12; i+=4){
+                cnt.push(XORgate([gateInput[i], gateInput[i+1], gateInput[i+2], gateInput[i+3]]))
+            }
+            console.log(cnt)
+            return XORgate(cnt)
+    }
+}
 function NOT(gateOutput){
     return gateOutput == 1 ? 0 : 1
 }
@@ -42,6 +105,15 @@ function readyToDecode(){
 
     for(let id of GATES.IDs){
         if(CABLE.gateInputs[id] == null) return false
+    }
+
+    for(let gate of GATES.IDs){
+        if(GATES.idToConntent[gate].includes('X1')){
+            
+            if(CABLE.gateInputs[gate].length > 12){
+                console.error('maximum connections for xor is 12')
+            }
+        }
     }
 
     return true
@@ -73,7 +145,10 @@ function findAnswer(inputValues){
 
                 if(GATES.inputs[id].length == CABLE.gateInputs[id].length){
 
-                    if(GATES.idToConntent[id].includes('&')){
+                    if(GATES.idToConntent[id].includes('X1')){
+                        GATES.values[id] = XORgate(GATES.inputs[id])
+
+                    }else if(GATES.idToConntent[id].includes('&')){
                         GATES.values[id] = ANDgate(GATES.inputs[id])
                     
                     }else if(GATES.idToConntent[id].includes('1')){
@@ -116,11 +191,10 @@ function findAnswer(inputValues){
         repetion++
 
         if(repetion >= 100){
-            console.error('somethig went wrong')
+            console.error('kkt si fr')
             break
         }
     }
-    console.log(GATES.values)
 }
 function fillAnswer(){
 
@@ -131,7 +205,6 @@ function fillAnswer(){
             for(let i = 0; i < num_cols; i++){
 
                 let inputName = `in${j}-${i}`
-                console.log(inputName)
                 rowValues[`input${alphabet[i]}`] = parseInt(document.getElementsByName(inputName)[0].value)
             }
             findAnswer(rowValues)
@@ -241,11 +314,11 @@ function showInputTable(){
     switch(buttonT.textContent){
         case '+table':
             buttonT.textContent = '-table'
-            document.getElementById('tableContainer').style.opacity = '1'
+            document.getElementById('tableContainer').style.top = '94%'
             break
         case '-table':
             buttonT.textContent = '+table'
-            document.getElementById('tableContainer').style.opacity = '0'
+            document.getElementById('tableContainer').style.top = '200%'
     }
 }
 function createTable() {

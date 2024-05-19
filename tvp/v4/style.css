@@ -101,14 +101,11 @@ body{
     border: 0.1vh solid white;
 }
 #tableContainer{
-    top: 94%;
-    opacity: 0;
+    top: 200%;
 
     border-radius: 6px;
     border: 0.16vh white solid;
 
-    overflow: auto;
-    max-height: 60vh;
     transform: translate(0, -100%);
     margin: 1vh;
     position: absolute;
@@ -122,6 +119,8 @@ body{
     background-color: gray;
 }
 #TABLE{
+    max-height: 50vh;
+    overflow: auto;
     display: flex;
     border-top: 0.16vh white solid;
     border-bottom: 0.16vh white solid;
@@ -134,9 +133,10 @@ body{
 
     color: white;
     font-weight: bold;
+    font-size: 1em;
     text-align: center;
-    width: 1.6vh;
-    height: 2vh;
+    width: 2.2vh;
+    height: 2.8vh;
     border: 2.5px solid white;
     border-radius: 5px;
     background-color: black;
@@ -152,10 +152,11 @@ body{
     display: grid;
 
     color: grey;
+    font-size: 1em;
     font-weight: bold;
     text-align: center;
-    width: 1.6vh;
-    height: 2vh;
+    width: 2.2vh;
+    height: 2.8vh;
     border: 2.5px solid white;
     border-radius: 5px;
     background-color: black;

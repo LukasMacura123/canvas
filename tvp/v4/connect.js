@@ -46,7 +46,7 @@ window.addEventListener('mousedown', (e) => {
         if(e.button == 0){
             CABLE.startGate = hoverGate
             ctrlOutput = CABLE.output
-
+1
         }else if(e.button == 2 && hoverInput == null && hoverOutput == null){
 
             CABLE.startGate = hoverGate
@@ -64,7 +64,7 @@ window.addEventListener('mouseup', (e) => {
         if(ctrlOutput != CABLE.output){
             if(e.button == 0 && tools.cable){
 
-                if(CABLE.output){
+                if(CABLE.output && INPUTS.startIn == null){
                 
                     if(CABLE.gateInputs[CABLE.startGate] == null){
 
@@ -75,23 +75,36 @@ window.addEventListener('mouseup', (e) => {
                         console.error('maximum is 15 connections')
 
                     }else{
-
+                        console.log(hoverGate)
                         CABLE.gateInputs[CABLE.startGate].push(hoverGate)
                     }
                 }else{
                 
                     if(CABLE.gateInputs[hoverGate] == null){
-                        CABLE.gateInputs[hoverGate] = [CABLE.startGate]
+
+                        if(CABLE.startGate == null){
+                         
+                            CABLE.gateInputs[hoverGate] = [INPUTS.startIn]
+                        }else{
+                         
+                            CABLE.gateInputs[hoverGate] = [CABLE.startGate]
+                        }
                     }else if(CABLE.gateInputs[hoverGate].length >= 16){
+
                         console.error('maximum is 15 connections')
                     }else{
-                        CABLE.gateInputs[hoverGate].push(CABLE.startGate)
+                        if(CABLE.startGate == null){
+
+                            CABLE.gateInputs[hoverGate].push(INPUTS.startIn)
+                        }else{
+                         
+                            CABLE.gateInputs[hoverGate].push(CABLE.startGate)
+                        }
                     }
                 }
 
                 if(INPUTS.startIn != null){
 
-                    console.log(INPUTS.startIn)
                     if(INPUTS.toGate[INPUTS.startIn] == null) INPUTS.toGate[INPUTS.startIn] = []
                 
                     INPUTS.toGate[INPUTS.startIn].push(hoverGate)
@@ -124,23 +137,23 @@ window.addEventListener('mouseup', (e) => {
             }
         }
     }
-    if(e.button == 2 && INPUTS.startIn != null && hoverGate != null && tools.cable){
+    if(e.button == 2 && INPUTS.startIn != null && hoverGate != null && tools.cable){ 
 
         for(let i of INPUTS.IDs){
 
             if(INPUTS.toGate[i] != null){
                 try{
                     INPUTS.toGate[i].splice(INPUTS.toGate[i].indexOf(hoverGate), 1)
-                
                 }catch(error){}
                 
             }
+            if(CABLE.gateInputs[hoverGate] != null){
+                if(CABLE.gateInputs[hoverGate].includes(i)){
+                    CABLE.gateInputs[hoverGate].splice(CABLE.gateInputs[hoverGate].indexOf(i), 1)
+                }
+            }
         }
-        try{
-            GATES.gateInputs[hoverGate].splice(GATES.gateInputs[hoverGate].indexOf(null), 1)
-        }catch(error){}
     }
-
     ctrlOutput = null
 
     INPUTS.startIn = null
